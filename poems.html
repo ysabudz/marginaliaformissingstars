@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marginalia for Missing Stars</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Merriweather:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      sizes="any"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💫</text></svg>"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Ambient Background -->
+    <div id="ambient"></div>
+    <div class="moon night" id="skyOrb"></div>
+
+    <!-- Buttons -->
+    <button
+      id="soundToggle"
+      aria-label="toggle ambient sound"
+      title="ambient sound"
+    >
+      &#9834;
+    </button>
+
+    <button
+      id="skyToggle"
+      aria-label="toggle sky mood"
+      title="switch between night, sunset, and sunrise"
+    >
+      &#127769;
+    </button>
+
+    <!-- Header -->
+    <header>
+      <h1>Marginalia for Missing Stars</h1>
+      <p>every star in the sky is a memory waiting to be admired</p>
+      <p class="hint">— pick a book, then whisper the password —</p>
+    </header>
+
+    <!-- Bookshelf -->
+    <div class="bookcase-wrap" id="bookcaseWrap"></div>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        a shelf of small secrets, borrowed songs, &amp; a cat who won't stop
+        napping here
+      </p>
+      <p>an original poetry collection and website by ysa</p>
+    </footer>
+
+    <!-- Popup -->
+    <div id="overlay">
+      <div class="page" id="pageContent"></div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>

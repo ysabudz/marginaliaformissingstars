@@ -1,0 +1,745 @@
+:root {
+  --night-1: #1b2340;
+  --night-2: #0e1226;
+  --shelf: #232c4e;
+  --shelf-dark: #141930;
+  --periwinkle: #aab8e8;
+  --periwinkle-dark: #7c8ad1;
+  --pastel-blue: #bfd8f0;
+  --lavender: #c9bfe8;
+  --lavender-dark: #9c8fcb;
+  --powder: #d7e3f4;
+  --silver: #e9edf7;
+  --muted-silver: #9aa6c6;
+  --glow: #f4eeda;
+  --present: #e3c87e;
+  --correct: #8fbf9f;
+  --absent: #414a6e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, var(--night-1), var(--night-2) 60%);
+  color: var(--silver);
+  font-family: "Quicksand", sans-serif;
+  overflow-x: hidden;
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  transition: background 1.2s ease;
+}
+
+body.mode-sunset {
+  background: linear-gradient(
+    180deg,
+    #241b3d 0%,
+    #6b3a56 42%,
+    #c97b5b 62%,
+    #2b1b33 100%
+  );
+  background-attachment: fixed;
+}
+
+body.mode-sunrise {
+  background: linear-gradient(
+    180deg,
+    #2e3a5e 0%,
+    #7c6fa6 42%,
+    #f0b99c 62%,
+    #3a2e4a 100%
+  );
+  background-attachment: fixed;
+}
+
+/* ---------- ambient night sky ---------- */
+#ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: auto;
+  z-index: 1;
+  overflow: hidden;
+  transition: transform 0.7s ease-out;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--silver);
+  box-shadow: 0 0 4px 1px rgba(233, 237, 247, 0.5);
+  animation: twinkle 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.star-gold {
+  width: 3px;
+  height: 3px;
+  background: #ffd966;
+  box-shadow: 0 0 8px 2px rgba(255, 217, 102, 0.85);
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.wish {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 10px 4px rgba(244, 238, 218, 0.9);
+  pointer-events: none;
+  animation: wishPop 1s ease-out forwards;
+}
+
+@keyframes wishPop {
+  0% {
+    opacity: 1;
+    transform: scale(0.4);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+.moon {
+  position: fixed;
+  top: 26px;
+  left: 30px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  z-index: 3;
+  transition:
+    background 1.1s ease,
+    box-shadow 1.1s ease;
+}
+
+.moon.night {
+  background: radial-gradient(
+    circle at 35% 35%,
+    #ffffff,
+    #c7cee3 55%,
+    #9aa6c6 100%
+  );
+  box-shadow:
+    0 0 22px 8px rgba(233, 237, 247, 0.55),
+    0 0 50px 18px rgba(233, 237, 247, 0.25);
+}
+
+.moon.sun {
+  background: radial-gradient(
+    circle at 35% 35%,
+    #ffe59a,
+    #f6b94d 45%,
+    #e2572b 100%
+  );
+  box-shadow:
+    0 0 26px 10px rgba(230, 120, 40, 0.55),
+    0 0 55px 20px rgba(220, 80, 30, 0.3);
+}
+
+/* ---------- header ---------- */
+header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 4.5rem 1.5rem 1.5rem;
+}
+
+header h1 {
+  font-family: "Great Vibes", cursive;
+  font-weight: 300;
+  font-size: clamp(4.5rem, 2vw, 5.5rem);
+  color: var(--powder);
+  margin: 0 0 0.2rem;
+  text-shadow: 0 0 18px rgba(191, 216, 240, 0.35);
+  word-spacing: 12px;
+}
+
+header p {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--muted-silver);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.hint {
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.8rem;
+  color: var(--periwinkle);
+  margin-top: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ---------- sound toggle ---------- */
+#soundToggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--periwinkle-dark);
+  background: var(--shelf);
+  color: var(--powder);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+#soundToggle:hover {
+  transform: scale(1.08);
+}
+#soundToggle.on {
+  background: var(--periwinkle-dark);
+  color: var(--night-2);
+}
+
+#skyToggle {
+  position: fixed;
+  top: 70px;
+  right: 18px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--periwinkle-dark);
+  background: var(--shelf);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease;
+}
+
+#skyToggle:hover {
+  transform: scale(1.08);
+}
+
+/* ---------- bookcase ---------- */
+.bookcase-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+  margin: 1rem auto 3rem;
+  padding: 0 1.2rem;
+}
+
+.shelf {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  padding: 22px 24px 16px;
+  background: linear-gradient(180deg, var(--shelf), var(--shelf-dark));
+  border-radius: 10px 10px 4px 4px;
+  margin-bottom: 34px;
+  box-shadow:
+    0 10px 0 -4px var(--shelf-dark),
+    0 14px 22px rgba(0, 0, 0, 0.4);
+  flex-wrap: wrap;
+  min-height: 168px;
+  border: 1px solid rgba(170, 184, 232, 0.15);
+}
+
+.shelf::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: -10px;
+  height: 12px;
+  background: var(--shelf-dark);
+  border-radius: 4px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.book {
+  position: relative;
+  width: 46px;
+  border-radius: 3px 6px 6px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 4px;
+  cursor: pointer;
+  box-shadow:
+    inset -4px 0 6px rgba(0, 0, 0, 0.25),
+    1px 1px 3px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  transform-origin: bottom center;
+}
+
+.book span {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.85),
+    0 0 2px rgba(255, 255, 255, 0.9);
+}
+
+.book .lock-badge {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.book:hover {
+  transform: translateY(-14px) rotate(-2deg);
+  box-shadow:
+    inset -4px 0 6px rgba(0, 0, 0, 0.25),
+    3px 12px 18px rgba(0, 0, 0, 0.4);
+}
+
+.book.hidden-book {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+}
+
+.book.hidden-book.revealed {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* sleeping cat easter egg */
+.cat {
+  position: absolute;
+  right: 14px;
+  bottom: 6px;
+  width: 46px;
+  height: 26px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.cat svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.meow {
+  position: absolute;
+  bottom: 30px;
+  right: 0;
+  font-family: "Great Vibes", cursive;
+  font-size: 1.3rem;
+  color: var(--night-2);
+  background: var(--powder);
+  border-radius: 12px;
+  padding: 2px 12px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.meow.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--muted-silver);
+  padding: 1.5rem 1rem 3rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* ---------- overlay ---------- */
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 9, 22, 0.65);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+
+#overlay.open {
+  display: flex;
+}
+
+.page {
+  position: relative;
+  width: fit-content;
+  min-width: min(100%, 340px);
+  max-width: min(94vw, 620px);
+  max-height: min(88vh, 960px);
+  overflow-y: auto;
+  background: linear-gradient(180deg, #202850, #171d3c);
+  border-radius: 8px;
+  padding: 2.6rem 2.4rem 2.2rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  transform-origin: left center;
+  animation: pageOpen 0.5s cubic-bezier(0.25, 0.8, 0.35, 1);
+  border: 1px solid rgba(170, 184, 232, 0.18);
+  scrollbar-width: thin;
+  scrollbar-color: var(--periwinkle-dark) rgba(170, 184, 232, 0.08);
+}
+
+.page::-webkit-scrollbar {
+  width: 9px;
+}
+
+.page::-webkit-scrollbar-track {
+  background: rgba(170, 184, 232, 0.08);
+  border-radius: 8px;
+}
+
+.page::-webkit-scrollbar-thumb {
+  background: var(--periwinkle-dark);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.page::-webkit-scrollbar-thumb:hover {
+  background: var(--periwinkle);
+}
+
+@keyframes pageOpen {
+  from {
+    opacity: 0;
+    transform: rotateY(-35deg) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) scale(1);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: var(--lavender-dark);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.closeBtn:hover {
+  background: var(--periwinkle-dark);
+}
+
+.corner-motif {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 44px;
+  height: 44px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.page h2 {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 2.6rem;
+  color: var(--powder);
+  margin: 0.6rem 0 0.2rem 2.4rem;
+  text-shadow: 0 0 14px rgba(191, 216, 240, 0.3);
+}
+
+.page .poem {
+  font-family: "Merriweather", Georgia, serif;
+  font-style: normal;
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.8;
+  color: var(--silver);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: none;
+  width: fit-content;
+  max-width: 100%;
+  min-width: min(100%, 16rem);
+  margin: 1.2rem 0 1.6rem;
+  text-align: left;
+}
+
+.page .poem em {
+  font-style: italic;
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-top: 1px dashed rgba(170, 184, 232, 0.3);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.record {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    var(--periwinkle) 0 8%,
+    #10152a 9% 12%,
+    #262e52 13% 22%,
+    #10152a 23% 26%,
+    #262e52 27% 36%,
+    #10152a 37% 40%,
+    #262e52 41% 100%
+  );
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.record:hover {
+  animation: spin 1.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.record-label {
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted-silver);
+  line-height: 1.4;
+}
+
+.record-label b {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--powder);
+}
+
+.sparkle {
+  position: fixed;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 60;
+  animation: sparkleUp 1.1s ease-out forwards;
+}
+
+@keyframes sparkleUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.6) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px) scale(1.2) rotate(40deg);
+  }
+}
+
+/* ---------- lock / wordle game ---------- */
+.lock-title {
+  font-family: "Great Vibes", cursive;
+  font-size: 2.2rem;
+  color: var(--powder);
+  text-align: center;
+  margin: 0.4rem 0 0.3rem;
+}
+
+.lock-sub {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  text-align: center;
+  color: var(--muted-silver);
+  margin: 0 0 1.3rem;
+  font-size: 1.05rem;
+}
+
+.lock-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 1.3rem;
+}
+
+.lock-row {
+  display: flex;
+  gap: 6px;
+}
+
+.lock-box {
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid rgba(170, 184, 232, 0.35);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--silver);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.lock-box.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: #0e1226;
+}
+.lock-box.present {
+  background: var(--present);
+  border-color: var(--present);
+  color: #0e1226;
+}
+.lock-box.absent {
+  background: var(--absent);
+  border-color: var(--absent);
+  color: var(--muted-silver);
+}
+
+.lock-msg {
+  text-align: center;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--lavender);
+  min-height: 1.4rem;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.kb-row {
+  display: flex;
+  gap: 5px;
+}
+
+.kb-key {
+  min-width: 26px;
+  padding: 9px 6px;
+  border-radius: 5px;
+  border: none;
+  background: rgba(170, 184, 232, 0.18);
+  color: var(--silver);
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.kb-key:hover {
+  background: rgba(170, 184, 232, 0.32);
+}
+.kb-key.wide {
+  min-width: 48px;
+  font-size: 0.68rem;
+}
+.kb-key.correct {
+  background: var(--correct);
+  color: #0e1226;
+}
+.kb-key.present {
+  background: var(--present);
+  color: #0e1226;
+}
+.kb-key.absent {
+  background: rgba(65, 74, 110, 0.6);
+  color: var(--muted-silver);
+}
+
+@media (max-width: 560px) {
+  .shelf {
+    gap: 10px;
+    padding: 18px 14px 14px;
+  }
+  .book {
+    width: 38px;
+  }
+  .book span {
+    font-size: 1.15rem;
+  }
+  .lock-box {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  .kb-key {
+    min-width: 22px;
+    padding: 8px 4px;
+    font-size: 0.7rem;
+  }
+}
