@@ -1,13 +1,3 @@
-/* ============================================================
-   YOUR POEMS COLLECTION
-   - Edit titles, passwords, colors (spine), or heights as you like.
-   - Set a song link in `song: ""` (e.g., YouTube or Spotify link) 
-     if you want a record player button to open a song for that poem!
-   ============================================================ */
-/* ============================================================
-   YOUR POEMS COLLECTION
-   - Song links go directly to YouTube videos.
-   ============================================================ */
 const POEMS = [
   {
     id: 1,
@@ -130,6 +120,21 @@ the softest things i mean the most.
 since you're here, thank you
 for being curious about me.`,
     song: "https://youtu.be/rKbIMWeNDNY?si=7tmk3OkJWJ3v9leK" /* habangbuhay pansamantala by Maki */,
+  },
+  {
+    id: 6,
+    title: "untitled.",
+    spine: "#5307ce",
+    height: 145,
+    password: "never",
+    poem: `for all that's been said and done,
+under the surface, i've hoped
+can you at least tell me you've loved?
+keeping the paraphernalia of us,
+may it be a reminder to you and me
+ending the beginning of what one was
+never stated, too blinded to see`,
+    song: "https://youtu.be/hsLiJP2rqS8?si=bXd8riZm2BHwu4xd",
   },
 ];
 
