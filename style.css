@@ -21,23 +21,20 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html {
   margin: 0;
   padding: 0;
   background: linear-gradient(180deg, var(--night-1), var(--night-2) 60%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
   color: var(--silver);
   font-family: "Quicksand", sans-serif;
-  overflow-x: hidden;
-  min-height: 100%;
-}
-
-body {
-  position: relative;
   transition: background 1.2s ease;
+  width: 100vw;
+  height: 100vh;
 }
 
-body.mode-sunset {
+html.mode-sunset {
   background: linear-gradient(
     180deg,
     #241b3d 0%,
@@ -46,9 +43,10 @@ body.mode-sunset {
     #2b1b33 100%
   );
   background-attachment: fixed;
+  background-size: 100% 100%;
 }
 
-body.mode-sunrise {
+html.mode-sunrise {
   background: linear-gradient(
     180deg,
     #2e3a5e 0%,
@@ -57,6 +55,17 @@ body.mode-sunrise {
     #3a2e4a 100%
   );
   background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  color: var(--silver);
+  font-family: "Quicksand", sans-serif;
+  overflow-x: hidden;
+  background: transparent;
 }
 
 /* ---------- ambient night sky ---------- */
