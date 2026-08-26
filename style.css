@@ -188,12 +188,13 @@ header h1 {
 }
 
 header p {
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Quicksand", serif;
   font-style: italic;
   font-size: 1.15rem;
   color: var(--muted-silver);
   margin: 0;
   letter-spacing: 0.5px;
+  font-weight: 1000;
 }
 
 .hint {
@@ -202,6 +203,7 @@ header p {
   color: var(--periwinkle);
   margin-top: 0.9rem;
   opacity: 0.8;
+  font-weight: bold;
 }
 
 /* ---------- sound toggle ---------- */
@@ -403,12 +405,12 @@ footer {
   position: relative;
   z-index: 2;
   text-align: center;
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
+  font-family: "Quicksand", sans-serif;
   color: var(--muted-silver);
   padding: 1.5rem 1rem 3rem;
   font-size: 1rem;
   opacity: 0.85;
+  font-weight: bolder;
 }
 
 /* ---------- overlay ---------- */
