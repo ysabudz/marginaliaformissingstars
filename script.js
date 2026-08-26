@@ -26,7 +26,7 @@ i am of ash that holds the memory of your fire,
   {
     id: 2,
     title: "our bonfire",
-    spine: "#C97B5B" /* Warm flame orange */,
+    spine: "#cf7d24" /* Warm flame orange */,
     height: 185,
     password: "smoke",
     poem: `there's something conspicuous with the way you talk while the sun hides.
@@ -128,13 +128,37 @@ for being curious about me.`,
     height: 145,
     password: "never",
     poem: `for all that's been said and done,
-under the surface, i have hoped
+under the surface, i've hoped
 can you at least tell me you've loved?
 keeping the paraphernalia of us,
 may it be a reminder to you and me
-ending the beginning of what once was
+ending the beginning of what one was
 never stated, too blinded to see`,
     song: "https://youtu.be/hsLiJP2rqS8?si=bXd8riZm2BHwu4xd",
+  },
+  {
+    id: 7,
+    title: "overstayed",
+    spine: "#769175",
+    height: 165,
+    password: "hotel",
+    poem: `i had let you in my home with open arms,
+only to have you thrash it with your baggage.
+you stayed for nights of brief, euphoric haze
+then left once out of your mythical maze.
+
+for you, my home was a hostel of your crimes,
+a dumping ground for every past heartbreak.
+your shadow left stains on wall and floor,
+reeking of a loveless carnivore.
+
+leaving me trapped within your tragic loss,
+you found me clinging to a broken promise.
+recalling the contract of your stay here
+but you left me cleaning up all of the tears,
+<em>both mine and yours.</em>
+`,
+    song: "https://youtu.be/AyX_LL9nWSE?si=bvJG7nQqodvD_Uvw",
   },
 ];
 
@@ -631,8 +655,8 @@ const moonEl = document.getElementById("skyOrb");
 let skyMode = "night";
 function setSkyMode(mode) {
   skyMode = mode;
-  document.body.classList.remove("mode-sunset", "mode-sunrise");
-  if (mode !== "night") document.body.classList.add("mode-" + mode);
+  document.documentElement.classList.remove("mode-sunset", "mode-sunrise");
+  if (mode !== "night") document.documentElement.classList.add("mode-" + mode);
 
   moonEl.className = "moon " + (mode === "night" ? "night" : "sun");
 
