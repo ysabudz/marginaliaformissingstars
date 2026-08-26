@@ -275,8 +275,9 @@ function showPoemPage(p) {
   page.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.3)";
   page.style.padding = "2.5rem 2rem";
   page.style.borderRadius = "12px";
-  page.style.maxWidth = "520px"; /* Keeps the page width comfy */
+  page.style.width = "fit-content";
   page.style.margin = "0 auto";
+  page.style.maxWidth = "90vw";
 
   page.innerHTML = `
     <button class="closeBtn" id="closeBtn" aria-label="close" style="color: #8C7B73; font-size: 1.2rem;">&#10005;</button>
