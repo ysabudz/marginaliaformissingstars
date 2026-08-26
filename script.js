@@ -128,11 +128,11 @@ for being curious about me.`,
     height: 145,
     password: "never",
     poem: `for all that's been said and done,
-under the surface, i've hoped
+under the surface, i have hoped
 can you at least tell me you've loved?
 keeping the paraphernalia of us,
 may it be a reminder to you and me
-ending the beginning of what one was
+ending the beginning of what once was
 never stated, too blinded to see`,
     song: "https://youtu.be/hsLiJP2rqS8?si=bXd8riZm2BHwu4xd",
   },
