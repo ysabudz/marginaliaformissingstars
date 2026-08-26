@@ -1,4 +1,3 @@
-
 const POEMS = [
   {
     id: 1,
@@ -145,7 +144,7 @@ let lockState = null;
 function buildShelves() {
   const wrap = document.getElementById("bookcaseWrap");
   wrap.innerHTML = ""; // clear shelf before building
-  const perShelf = window.innerWidth < 560 ? 3 : 4;
+  const perShelf = 10;
   const visible = POEMS.filter((p) => !p.hidden);
   const hidden = POEMS.filter((p) => p.hidden);
 
