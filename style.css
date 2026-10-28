@@ -15,6 +15,10 @@
   --present: #e3c87e;
   --correct: #8fbf9f;
   --absent: #414a6e;
+  --wood-back: #5a3a25;
+  --wood-back-dark: #3a2314;
+  --wood-plank: #a06f48;
+  --wood-plank-dark: #6b4529;
 }
 
 * {
@@ -274,27 +278,45 @@ header p {
   justify-content: center;
   gap: 14px;
   padding: 22px 24px 16px;
-  background: linear-gradient(180deg, var(--shelf), var(--shelf-dark));
+  /* back panel: darker wood with vertical grain */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.1) 0 2px,
+      transparent 2px 9px,
+      rgba(255, 210, 160, 0.04) 9px 11px,
+      transparent 11px 22px
+    ),
+    linear-gradient(180deg, var(--wood-back), var(--wood-back-dark));
   border-radius: 10px 10px 4px 4px;
   margin-bottom: 34px;
   box-shadow:
-    0 10px 0 -4px var(--shelf-dark),
+    inset 0 8px 14px rgba(0, 0, 0, 0.35),
+    0 10px 0 -4px var(--wood-plank-dark),
     0 14px 22px rgba(0, 0, 0, 0.4);
   flex-wrap: wrap;
   min-height: 168px;
-  border: 1px solid rgba(170, 184, 232, 0.15);
+  border: 2px solid #2b1a0e;
 }
 
+/* front plank the books sit on */
 .shelf::after {
   content: "";
   position: absolute;
-  left: 6px;
-  right: 6px;
-  bottom: -10px;
-  height: 12px;
-  background: var(--shelf-dark);
+  left: -4px;
+  right: -4px;
+  bottom: -12px;
+  height: 14px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(60, 30, 10, 0.18) 0 2px,
+      transparent 2px 14px
+    ),
+    linear-gradient(180deg, var(--wood-plank), var(--wood-plank-dark));
   border-radius: 4px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2b1a0e;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.35);
 }
 
 .book {
@@ -732,6 +754,97 @@ footer {
   color: var(--muted-silver);
 }
 
+/* ---------- rainbow vinyl (secret CD) ---------- */
+.cd-disc {
+  position: fixed;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  z-index: 45;
+  cursor: pointer;
+  background: conic-gradient(
+    from 20deg,
+    #f6c1d1,
+    #f9d9b6,
+    #fbf0b5,
+    #c8ecc9,
+    #b5e3f2,
+    #c9c3f2,
+    #ecc3ee,
+    #f6c1d1
+  );
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.45),
+    0 0 16px rgba(244, 238, 218, 0.35),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  transition-property: filter;
+}
+
+.cd-disc:hover {
+  filter: brightness(1.08) saturate(1.1);
+}
+
+/* fine vinyl grooves */
+.cd-disc::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0) 0 2px,
+    rgba(255, 255, 255, 0.18) 2px 3px,
+    rgba(0, 0, 0, 0.05) 3px 4px
+  );
+  pointer-events: none;
+}
+
+/* soft light sheen */
+.cd-disc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.55) 45%,
+    transparent 55%,
+    transparent 80%,
+    rgba(255, 255, 255, 0.25) 88%,
+    transparent 95%
+  );
+  pointer-events: none;
+}
+
+/* center label with a little spindle hole */
+.cd-disc .cd-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a2e 0 10%, #f4eeda 11% 100%);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotateZ(-20deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateZ(0deg);
+  }
+}
+
 @media (max-width: 560px) {
   .shelf {
     gap: 10px;
@@ -752,5 +865,18 @@ footer {
     min-width: 22px;
     padding: 8px 4px;
     font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookcase-wrap {
+    padding: 0 0.5rem;
+  }
+  .shelf {
+    gap: 8px;
+    padding: 16px 10px 12px;
+  }
+  .book {
+    width: 42px;
   }
 }
