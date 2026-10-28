@@ -110,16 +110,11 @@ You will forever be my one and only star`,
     title: "secrets",
     spine: "#000000",
     height: 145,
+    width: 28,
     hidden: true,
     password: "meows",
-    poem: `you weren't supposed to find this one —
-it was tucked behind the others
-on purpose, the way i tuck away
-the softest things i mean the most.
-
-since you're here, thank you
-for being curious about me.`,
-    song: "https://youtu.be/rKbIMWeNDNY?si=7tmk3OkJWJ3v9leK" /* habangbuhay pansamantala by Maki */,
+    isMusic: true,
+    song: "https://open.spotify.com/playlist/0A4sGigAGazlVTZVdTwbrV?si=127500d919074ba0" /* spotify playlist */,
   },
   {
     id: 6,
@@ -160,22 +155,87 @@ but you left me cleaning up all of the tears,
 `,
     song: "https://youtu.be/AyX_LL9nWSE?si=bvJG7nQqodvD_Uvw",
   },
+
+  {
+    id: 8,
+    title: "wanderer's anchor",
+    spine: "#65b0ff",
+    height: 185,
+    password: "waves",
+    poem: `there's an alluring peculiarity in your serenity.
+such as the sea where the waves whisper wonders,
+such as the breeze with leaves speaking of yonders,
+i figured... was there such a moment with me?
+
+ascertain ambiguity in every gaze and pace,
+delusions form in my mind like the time you held my face,
+thinking of when was the last time you loved someone,
+thinking of when it will be my turn to be the one.
+
+i wonder if my chaos disturbs your very demeanor.
+no number of apologies can be expressed for thy honor
+for perhaps, i struck a nerve (or two) with such nuisance
+or maybe, i tormented your sleep with my persistence?
+
+i wonder if i left a mark in your nonchalant heart,
+a scarring impression of my misbehavior and turmoil
+or a delightful sensation — an alien wearing tinfoil
+whatever it is, yours is a life i shall be a part
+and with whatever the wind blows ashore,
+a constant companion is what i assure.
+
+`,
+    song: "https://youtu.be/CqBQiz6DfBE?si=d7N2a60cReXAdWAy",
+  },
 ];
 
 const unlocked = new Set();
 let lockState = null;
 
+/* FIX: remember that the hidden item (CD / hidden book) was already revealed,
+   so rebuilding the shelves doesn't bring the 🔐 ornament back */
+let hiddenRevealed = false;
+
 function buildShelves() {
   const wrap = document.getElementById("bookcaseWrap");
   wrap.innerHTML = ""; // clear shelf before building
-  const perShelf = 10;
+
   const visible = POEMS.filter((p) => !p.hidden);
   const hidden = POEMS.filter((p) => p.hidden);
 
+  // Get responsive book dimensions
+  const defaultBookWidth =
+    window.innerWidth <= 480 ? 42 : window.innerWidth <= 560 ? 38 : 46;
+  const gap = window.innerWidth <= 480 ? 8 : window.innerWidth <= 560 ? 10 : 14;
+  const shelfPadding = window.innerWidth <= 480 ? 10 : 24; // horizontal padding on shelf
+
+  // Calculate usable shelf width
+  const wrap_padding = window.innerWidth <= 480 ? 0.5 * 16 : 1.2 * 16; // 0.5rem or 1.2rem in px
+  const availableWidth =
+    Math.min(920, window.innerWidth - wrap_padding * 2) - shelfPadding * 2;
+
+  // Build shelves with smart wrapping that accounts for individual book widths
   let shelves = [];
-  for (let i = 0; i < visible.length; i += perShelf) {
-    shelves.push(visible.slice(i, i + perShelf));
-  }
+  let currentShelf = [];
+  let currentWidth = 0;
+
+  visible.forEach((poem) => {
+    const bookWidth = poem.width || defaultBookWidth;
+    const neededWidth =
+      currentWidth === 0 ? bookWidth : currentWidth + gap + bookWidth;
+
+    if (neededWidth <= availableWidth || currentShelf.length === 0) {
+      currentShelf.push(poem);
+      currentWidth = neededWidth;
+    } else {
+      // Shelf full, start new one
+      shelves.push(currentShelf);
+      currentShelf = [poem];
+      currentWidth = bookWidth;
+    }
+  });
+
+  if (currentShelf.length > 0) shelves.push(currentShelf);
   if (shelves.length === 0) shelves.push([]);
 
   shelves.forEach((shelfPoems, sIdx) => {
@@ -186,11 +246,10 @@ function buildShelves() {
 
     if (sIdx === shelves.length - 1) {
       hidden.forEach((p) => {
-        const el = makeBookEl(p);
-        el.classList.add("hidden-book");
-        shelf.appendChild(el);
+        // only a revealed hidden *book* needs to come back after a rebuild;
+        // the CD lives on document.body
+        if (hiddenRevealed && !p.isMusic) shelf.appendChild(makeBookEl(p));
       });
-
       const cat = document.createElement("div");
       cat.className = "cat";
       cat.innerHTML = `
@@ -201,7 +260,7 @@ function buildShelves() {
           <polygon points="18,10 21,3 24,10" fill="#EADFF0" stroke="#9C8FCB" stroke-width="1"/>
           <ellipse cx="11" cy="16" rx="1.8" ry="1.3" fill="#D8A7B1"/>
         </svg>
-        <div class="meow">mrow~ &#9825;</div>
+        <div class="meow">meow~ &#9825;</div>
       `;
       cat.addEventListener("click", onCatClick);
       shelf.appendChild(cat);
@@ -216,11 +275,19 @@ function makeBookEl(p) {
   book.className = "book";
   book.style.background = p.spine;
   book.style.height = p.height + "px";
-  book.dataset.id = p.id;
+  /*
   const badge = document.createElement("div");
   badge.className = "lock-badge";
   badge.textContent = "\u{1F512}";
   book.appendChild(badge);
+ */
+  // Use custom width if provided, otherwise use responsive default
+  let bookWidth =
+    p.width ||
+    (window.innerWidth <= 480 ? 42 : window.innerWidth <= 560 ? 38 : 46);
+  book.style.width = bookWidth + "px";
+
+  book.dataset.id = p.id;
   const span = document.createElement("span");
   span.textContent = p.title;
   book.appendChild(span);
@@ -231,7 +298,11 @@ function makeBookEl(p) {
 function openBook(p, bookEl) {
   if (unlocked.has(p.id)) {
     playTone(660, 0.08);
-    showPoemPage(p);
+    if (p.isMusic) {
+      showMusicPage(p);
+    } else {
+      showPoemPage(p);
+    }
   } else {
     playTone(440, 0.06);
     startLock(p, bookEl);
@@ -316,6 +387,50 @@ function showPoemPage(p) {
   });
 }
 
+function showMusicPage(p) {
+  const overlay = document.getElementById("overlay");
+  const page = document.getElementById("pageContent");
+
+  // Dark elegant background for music
+  page.style.background = "#0a0e1a";
+  page.style.color = "#c9bfe8";
+  page.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.5)";
+  page.style.padding = "2.5rem 2rem";
+  page.style.borderRadius = "12px";
+  page.style.width = "fit-content";
+  page.style.margin = "0 auto";
+  page.style.maxWidth = "90vw";
+
+  page.innerHTML = `
+    <button class="closeBtn" id="closeBtn" aria-label="close" style="color: #aab8e8; font-size: 1.2rem;">&#10005;</button>
+    
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <h2 style="font-family: 'Great Vibes', cursive; font-size: 2rem; font-weight: 300; color: #f4eeda; margin: 0 0 1.5rem; letter-spacing: 0.05em;">secret collection</h2>
+      
+      <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+        <div class="record" id="recordSpin" title="play the song from this collection" style="width: 120px; height: 120px; cursor: pointer;"></div>
+      </div>
+      
+      <div style="font-family: 'Quicksand', sans-serif; color: #aab8e8; line-height: 1.6;">
+        <div style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1rem;">found something special here</div>
+        ${p.song ? `<div style="font-size: 0.85rem; color: #c9bfe8; font-style: italic;">click the record to listen</div>` : ""}
+      </div>
+    </div>
+  `;
+
+  overlay.classList.add("open");
+  document.getElementById("closeBtn").addEventListener("click", closeOverlay);
+  overlay.addEventListener("click", onOverlayClick);
+  document.getElementById("recordSpin").addEventListener("click", () => {
+    if (p.song) {
+      playTone(880, 0.06);
+      window.open(p.song, "_blank", "noopener");
+    } else {
+      playTone(300, 0.05);
+    }
+  });
+}
+
 function closeOverlay() {
   const overlay = document.getElementById("overlay");
   overlay.classList.remove("open");
@@ -394,6 +509,7 @@ function resetPageStyle() {
   page.style.removeProperty("border-radius");
   page.style.removeProperty("max-width");
   page.style.removeProperty("margin");
+  page.style.removeProperty("width"); // FIX: was left behind by showPoemPage
 }
 
 function submitGuess() {
@@ -414,12 +530,17 @@ function submitGuess() {
     s.message = "the page opens softly...";
     renderLock();
     unlocked.add(s.poem.id);
-    if (s.bookEl)
-      s.bookEl.querySelector(".lock-badge").textContent = "\u{1F513}";
+
+    /* FIX: the lock badge is commented out in makeBookEl, so this used to be
+       null and threw an error BEFORE the poem could open. Now it's null-safe. */
+    const badge = s.bookEl?.querySelector(".lock-badge");
+    if (badge) badge.textContent = "\u{1F513}";
+
     playTone(740, 0.08);
     setTimeout(() => {
       window.removeEventListener("keydown", onPhysicalKey);
-      showPoemPage(s.poem);
+      if (s.poem.isMusic) showMusicPage(s.poem);
+      else showPoemPage(s.poem);
       lockState = null;
     }, 900);
     return;
@@ -510,16 +631,74 @@ function renderLock() {
   });
 }
 
+function makeOrnamentEl() {
+  const ornament = document.createElement("div");
+  ornament.className = "ornament-lock";
+  ornament.style.width = "32px";
+  ornament.style.height = "145px";
+  ornament.style.display = "flex";
+  ornament.style.alignItems = "center";
+  ornament.style.justifyContent = "center";
+  ornament.style.fontSize = "24px";
+  ornament.style.opacity = "0.7";
+  ornament.style.cursor = "pointer";
+  ornament.innerHTML = `🔐`;
+  return ornament;
+}
+
+function makeCDEl(p, startX, startY) {
+  const cd = document.createElement("div");
+  cd.className = "cd-disc";
+  cd.style.left = startX + "px";
+  cd.style.top = startY + "px";
+  cd.title = "a secret record";
+
+  const label = document.createElement("div");
+  label.className = "cd-label";
+  cd.appendChild(label);
+
+  cd.dataset.poemId = p.id;
+  cd.addEventListener("click", () => openBook(p, cd));
+  return cd;
+}
+
 function onCatClick(e) {
   playTone(520, 0.05);
-  const meow = e.currentTarget.querySelector(".meow");
+  const catEl = e.currentTarget; // FIX: grab it now; currentTarget is null later
+  const meow = catEl.querySelector(".meow");
   meow.classList.add("show");
   setTimeout(() => meow.classList.remove("show"), 1400);
   burstSparkles(e.clientX, e.clientY);
 
-  const hiddenBook = document.querySelector(".book.hidden-book");
-  if (hiddenBook && !hiddenBook.classList.contains("revealed")) {
-    setTimeout(() => hiddenBook.classList.add("revealed"), 300);
+  // already revealed → just meow, nothing else to do
+  if (hiddenRevealed) return;
+
+  const hiddenPoem = POEMS.find((p) => p.hidden);
+  if (!hiddenPoem) return;
+
+  const shelf = catEl.parentElement;
+  hiddenRevealed = true;
+
+  if (hiddenPoem.isMusic) {
+    // cat "spits out" a CD that flies to the bottom right
+    const catRect = catEl.getBoundingClientRect();
+    const cdStartX = catRect.left + catRect.width / 2 - 39;
+    const cdStartY = catRect.top + catRect.height / 2 - 39;
+
+    const cd = makeCDEl(hiddenPoem, cdStartX, cdStartY);
+    document.body.appendChild(cd);
+
+    setTimeout(() => {
+      cd.style.transition = "all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      cd.style.left = window.innerWidth - 100 + "px";
+      cd.style.top = window.innerHeight - 100 + "px";
+      cd.style.transform = "rotate(720deg)";
+    }, 50);
+  } else {
+    const hiddenBook = makeBookEl(hiddenPoem);
+    hiddenBook.classList.add("hidden-book");
+    shelf.appendChild(hiddenBook);
+    setTimeout(() => hiddenBook.classList.add("revealed"), 100);
   }
 }
 
@@ -653,7 +832,7 @@ const skyIcons = {
 };
 const moonEl = document.getElementById("skyOrb");
 
-let skyMode = "night";
+let skyMode = "sunset"; // default theme
 function setSkyMode(mode) {
   skyMode = mode;
   document.documentElement.classList.remove("mode-sunset", "mode-sunrise");
@@ -679,3 +858,13 @@ document.getElementById("skyToggle").addEventListener("click", () => {
 });
 
 buildShelves();
+setSkyMode("sunset"); // apply the default theme on load
+
+/* FIX: only rebuild when the WIDTH changes (phones fire resize on scroll
+   when the address bar hides, which kept resetting the shelf) */
+let lastWidth = window.innerWidth;
+window.addEventListener("resize", () => {
+  if (window.innerWidth === lastWidth) return;
+  lastWidth = window.innerWidth;
+  buildShelves();
+});
