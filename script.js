@@ -29,16 +29,16 @@ i am of ash that holds the memory of your fire,
     spine: "#cf7d24" /* Warm flame orange */,
     height: 185,
     password: "smoke",
-    poem: `there's something conspicuous with the way you talk while the sun hides.
+    poem: `there's something with the way you talk while the sun hides.
 it was the feeling of looking up at the night sky beside our bonfire,
 talking about what life could have been if we met earlier,
-laughing at how ridiculous and embarrassing people we could were.
+laughing at how ridiculous and embarrassing people we were.
 
 maybe for us that was love — the quiet of the night and the noise of the fire
 but the quiet was more beautiful as it lingered, right?
-when the simple, small bonfire spread,
-the smoke devoured the sky. 
-all of a sudden, we lost each other
+when the simple, small, miniscule bonfire spread,
+the smoke devoured, encapsulating the sky. 
+all of a sudden, we lost each other.
 
 it took days or months for the smoke to fade,
 but when i saw past its facade,
