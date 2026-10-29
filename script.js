@@ -164,23 +164,23 @@ but you left me cleaning up all of the tears,
     password: "waves",
     poem: `there's an alluring peculiarity in your serenity.
 such as the sea where the waves whisper wonders,
-such as the breeze with leaves speaking of yonders,
+such as the breeze with leaves speaking of yonder,
 i figured... was there such a moment with me?
 
-ascertain ambiguity in every gaze and pace,
+ascertained ambiguity in every gaze and pace,
 delusions form in my mind like the time you held my face,
 thinking of when was the last time you loved someone,
 thinking of when it will be my turn to be the one.
 
 i wonder if my chaos disturbs your very demeanor.
-no number of apologies can be expressed for thy honor
+no number of apologies can be expressed for your honor
 for perhaps, i struck a nerve (or two) with such nuisance
 or maybe, i tormented your sleep with my persistence?
 
 i wonder if i left a mark in your nonchalant heart,
 a scarring impression of my misbehavior and turmoil
 or a delightful sensation — an alien wearing tinfoil
-whatever it is, yours is a life i shall be a part
+whatever it is, of your life i shall be a part
 and with whatever the wind blows ashore,
 a constant companion is what i assure.
 
